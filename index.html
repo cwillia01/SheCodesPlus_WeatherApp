@@ -20,19 +20,23 @@
         <div class ="current-city">
             <h1 id= "search-city">Edinburgh</h1></div>
             <p id = "date-today">date here</p>
+            <span class ="celcius"> °C | <a href="#" id ="farhen">°F</a> </span>
             <form>
                 <input type="text" id="city" placeholder = "search for a city" />
             </form>
-            <button id = "find-current-city">
+            <!-- <button id = "find-current-city">
                 Current City
-            </button>
+            </button> -->
         <div class="row align-items-start">
         <div class="col-4 low-temp">
             15
         </div>
     
         <div class = "col-4 todayweather">
-            <span class="material-icons">wb_sunny</span>
+            <span id="weatherdesc"></span>
+            <!-- <span id = "today-icon" class="material-icons">wb_sunny</span> -->
+            <img id = "today-icon" src="" alt="todays-weather">
+            <span id="wind-speed"></span>
         </div>
         <div class="col-4 high-temp ">
             22
