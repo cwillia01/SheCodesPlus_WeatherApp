@@ -61,3 +61,8 @@ div {
 .fourth-color {
   background: #aa512f;
 }
+
+.temps .active { 
+    color: rgb(33, 33, 33);
+    cursor: default;
+}

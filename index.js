@@ -1,3 +1,6 @@
+
+let tempMin, tempMax
+
 //set the date in the date-today paragraph
 function todayDate() { 
     let now = new Date()
@@ -40,8 +43,8 @@ function getWeather() {
 }
 
 function getResponse(response) {
-    let tempMax = Math.round(response.data.main.temp_max);
-    let tempMin = Math.round(response.data.main.temp_min);
+    tempMax = Math.round(response.data.main.temp_max);
+    tempMin = Math.round(response.data.main.temp_min);
     let desc = response.data.weather[0].main
   
     let lowElem = document.querySelector(".low-temp"); 
@@ -64,27 +67,44 @@ function getResponse(response) {
 
   getWeather();
 
-  // temp unit converter
-  function tempConverter(cel) { 
-      temp  = (cel * 9/5) + 32
-      tempReport = Math.round(temp)
-      return tempReport
-  }
+//////// add temperature conversions 
 
-  function updateUnitConversion() { 
-    let lowElem = document.querySelector(".low-temp"); 
-    newFarhen = tempConverter(lowElem.innerHTML);
-    lowElem.innerHTML = newFarhen;
+//convert to Farhen
+function displayFarhenTemp(event){ 
+  event.preventDefault(); 
+  let lowtempElem = document.querySelector(".low-temp"); 
+  let hightempElem = document.querySelector(".high-temp");
+  //active links"
+  convertCel.classList.remove("active"); 
+  convertFarhen.classList.add("active"); 
+  //I could make this calc a function of its own.
+  let lowfarhenTemp = (tempMin * 9) / 5 + 32; 
+  let highfarhenTemp = (tempMax * 9) / 5 + 32;
+  lowtempElem.innerHTML = Math.round(lowfarhenTemp);
+  hightempElem.innerHTML = Math.round(highfarhenTemp);
+}
 
-    let highElem = document.querySelector(".high-temp"); 
-    newFarhen = tempConverter(highElem.innerHTML);
-    highElem.innerHTML = newFarhen;
-  }
+let convertFarhen = document.querySelector("#farhen")
+convertFarhen.addEventListener("click", displayFarhenTemp);
 
-  let convert = document.querySelector("#farhen")
-  convert.addEventListener("click", updateUnitConversion)
+//convert to Cel
 
-tempConverter()
+function displayCelTemp(event){ 
+  event.preventDefault(); 
+  convertFarhen.classList.remove("active"); 
+  convertCel.classList.add("active"); 
+
+  let lowtempElem = document.querySelector(".low-temp"); 
+  let hightempElem = document.querySelector(".high-temp");
+
+  lowtempElem.innerHTML = Math.round(tempMin);
+  hightempElem.innerHTML = Math.round(tempMax);
+}
+
+let convertCel = document.querySelector("#cel")
+convertCel.addEventListener("click", displayCelTemp)
+
+
 //get result from search engine and update the heading
 let city
 
@@ -109,14 +129,14 @@ form.addEventListener("submit", getCity)
 
 //update temperature when search engine is used
 function showResponse(response) {
-  let tempMax = Math.round(response.data.main.temp_max);
-  let tempMin = Math.round(response.data.main.temp_min);
-  console.log(tempMax, tempMin);
+  let cityTempMax = Math.round(response.data.main.temp_max);
+  let cityTempMin = Math.round(response.data.main.temp_min);
+  console.log(cityTempMax, cityTempMin);
 
   let lowElem = document.querySelector(".low-temp"); 
-  lowElem.innerHTML = tempMin;
+  lowElem.innerHTML = cityTempMin;
   let highElem = document.querySelector(".high-temp"); 
-  highElem.innerHTML = tempMax;
+  highElem.innerHTML = cityTempMax;
 
   let todayIcon = document.querySelector("#today-icon")
   let icon = response.data.weather[0].icon
@@ -127,7 +147,7 @@ function showResponse(response) {
 }
 
 
-// add current city button and functionalirt
+// add current city button and functionality
 
 // function updateLocation() { 
 //     navigator.geolocation.getCurrentPosition(getLocation)
