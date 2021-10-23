@@ -55,9 +55,9 @@ function getResponse(response) {
     getLatLon(response.data.coord);
   
     let lowElem = document.querySelector(".low-temp"); 
-    lowElem.innerHTML = tempMin;
+    lowElem.innerHTML = tempMin + "°C";
     let highElem = document.querySelector(".high-temp"); 
-    highElem.innerHTML = tempMax;
+    highElem.innerHTML = tempMax + "°C";
     let windSpeed = document.querySelector("#wind-speed")
     units = " m/s"
     windSpeed.innerHTML =  response.data.wind.speed + units
@@ -82,44 +82,6 @@ function getResponse(response) {
     let apiUrl = `https://api.openweathermap.org/data/2.5/onecall?lat=${coords.lat}&lon=${coords.lon}&appid=${apiKey}&units=metric`;
     axios.get(apiUrl).then(displayForecast);
   }
-
-//////// add temperature conversions 
-
-//convert to Farhen
-function displayFarhenTemp(event){ 
-  event.preventDefault(); 
-  let lowtempElem = document.querySelector(".low-temp"); 
-  let hightempElem = document.querySelector(".high-temp");
-  //active links"
-  convertCel.classList.remove("active"); 
-  convertFarhen.classList.add("active"); 
-  //I could make this calc a function of its own.
-  let lowfarhenTemp = (tempMin * 9) / 5 + 32; 
-  let highfarhenTemp = (tempMax * 9) / 5 + 32;
-  lowtempElem.innerHTML = Math.round(lowfarhenTemp);
-  hightempElem.innerHTML = Math.round(highfarhenTemp);
-}
-
-let convertFarhen = document.querySelector("#farhen")
-convertFarhen.addEventListener("click", displayFarhenTemp);
-
-//convert to Cel
-
-function displayCelTemp(event){ 
-  event.preventDefault(); 
-  convertFarhen.classList.remove("active"); 
-  convertCel.classList.add("active"); 
-
-  let lowtempElem = document.querySelector(".low-temp"); 
-  let hightempElem = document.querySelector(".high-temp");
-
-  lowtempElem.innerHTML = Math.round(tempMin);
-  hightempElem.innerHTML = Math.round(tempMax);
-}
-
-let convertCel = document.querySelector("#cel")
-convertCel.addEventListener("click", displayCelTemp)
-
 
 //get result from search engine and update the heading
 let city
@@ -208,44 +170,3 @@ function displayForecast(response) {
   forecastElement.innerHTML = forecastHTML;
 }
 
-// add current city button and functionality
-
-// function updateLocation() { 
-//     navigator.geolocation.getCurrentPosition(getLocation)
-// }
-
-// function getLocation(position) { 
-//     let apiKey = "5f472b7acba333cd8a035ea85a0d4d4c";
-//     let lat = position.coords.latitude;
-//     let lon = position.coords.longitude;
-//     let url = `https://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${lon}&units=metric&appid=${apiKey}`;
-//     axios.get(url).then(updateCityInfo);
-// }
-
-// function updateCityInfo(response) { 
-//     console.log(response);
-    
-//     //update city name
-//     let citySearch = document.querySelector("#search-city");
-//     citySearch.innerHTML = response.data.name
-
-//     //update temps
-//     let tempMax = Math.round(response.data.main.temp_max);
-//     let tempMin = Math.round(response.data.main.temp_min);
-//     let lowElem = document.querySelector(".low-temp"); 
-//     lowElem.innerHTML = tempMin;
-//     let highElem = document.querySelector(".high-temp"); 
-//     highElem.innerHTML = tempMax;
-
-//     //update icons
-//     let todayIcon = document.querySelector("#today-icon")
-//     let icon = response.data.weather[0].icon
-//     iconURL = `http://openweathermap.org/img/wn/${icon}@2x.png`
-//     todayIcon.setAttribute("src", 
-//     iconURL
-//     );
-// }
-
-
-// let button = document.querySelector("#find-current-city")
-// button.addEventListener("click", updateLocation)
