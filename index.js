@@ -42,10 +42,17 @@ function getWeather() {
     axios.get(apiUrl).then(getResponse);
 }
 
+//get the coords for the forecast
+function getLatLon(coord) { 
+  returnForecastData(coord);
+}
+
 function getResponse(response) {
     tempMax = Math.round(response.data.main.temp_max);
     tempMin = Math.round(response.data.main.temp_min);
     let desc = response.data.weather[0].main
+    //log coords for the forecast
+    getLatLon(response.data.coord);
   
     let lowElem = document.querySelector(".low-temp"); 
     lowElem.innerHTML = tempMin;
@@ -66,6 +73,15 @@ function getResponse(response) {
   }
 
   getWeather();
+
+
+  //forecast 
+  function returnForecastData(coords) { 
+    console.log(coords); 
+    let apiKey = "bbd38691e217276012656e77f1249e98"; 
+    let apiUrl = `https://api.openweathermap.org/data/2.5/onecall?lat=${coords.lat}&lon=${coords.lon}&appid=${apiKey}&units=metric`;
+    axios.get(apiUrl).then(displayForecast);
+  }
 
 //////// add temperature conversions 
 
@@ -116,11 +132,10 @@ function getCity(event) {
     citySearch.innerHTML = input.value 
     city = input.value
 
-
     let apiKey = "bbd38691e217276012656e77f1249e98"
     let units = "metric"
     let apiUrl = `https://api.openweathermap.org/data/2.5/weather?q=${city}&appid=${apiKey}&&units=${units}`;
-    axios.get(apiUrl).then(showResponse);
+    axios.get(apiUrl).then(getResponse);
 }
 
 //add event listener
@@ -144,8 +159,54 @@ function showResponse(response) {
   todayIcon.setAttribute("src", 
   iconURL
   );
+
+}
+function formatDT(timestamp) { 
+  let datetime = timestamp * 1000
+  let date = new Date(datetime);
+  let day = date.getDay()
+  
+  let days = ["Sun", "Mon", "Tues", "Wed", "Thurs", "Fri", "Sat"]
+  return days[day];
+
 }
 
+function displayForecast(response) {
+  let forecast = response.data.daily;
+
+  let forecastElement = document.querySelector("#forecast");
+
+  let forecastHTML = `<div class="row">`;
+  forecast.forEach(function (forecastDay, index) {
+    if (index < 6) {
+      forecastHTML =
+        forecastHTML +
+        `
+      <div class="col-2">
+        <div class="weather-forecast-date">${formatDT(forecastDay.dt)}</div>
+        <img
+          src="http://openweathermap.org/img/wn/${
+            forecastDay.weather[0].icon
+          }@2x.png"
+          alt=""
+          width="42"
+        />
+        <div class="weather-forecast-temperatures">
+          <span class="weather-forecast-temperature-max"> ${Math.round(
+            forecastDay.temp.max
+          )}° </span>
+          <span class="weather-forecast-temperature-min"> ${Math.round(
+            forecastDay.temp.min
+          )}° </span>
+        </div>
+      </div>
+  `;
+    }
+  });
+
+  forecastHTML = forecastHTML + `</div>`;
+  forecastElement.innerHTML = forecastHTML;
+}
 
 // add current city button and functionality
 
