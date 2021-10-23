@@ -13,11 +13,7 @@ div {
 }
 
 .container {
-  display: block;
-  margin: 0 auto;
   text-align: center;
-  position: relative;
-  width: 500px;
 }
 
 .align-items-start {
@@ -62,7 +58,3 @@ div {
   background: #aa512f;
 }
 
-.temps .active { 
-    color: rgb(33, 33, 33);
-    cursor: default;
-}
