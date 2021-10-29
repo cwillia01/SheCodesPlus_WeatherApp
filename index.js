@@ -1,7 +1,7 @@
-
+// delare local variables
 let tempMin, tempMax
 
-//set the date in the date-today paragraph
+////////////////////  Today's Date     ////////////////////
 function todayDate() { 
     let now = new Date()
     let day = now.getDay()
@@ -29,11 +29,10 @@ function todayDate() {
 }
 
 todayDate()
+////////////////////   END Today's Date     ////////////////////
 
 
-
-//get results for edinburgh today
-
+/////////////////// Today's Weather ///////////////////
 function getWeather() {
     let apiKey = "bbd38691e217276012656e77f1249e98"
     let city = "Edinburgh"
@@ -42,16 +41,13 @@ function getWeather() {
     axios.get(apiUrl).then(getResponse);
 }
 
-//get the coords for the forecast
-function getLatLon(coord) { 
-  returnForecastData(coord);
-}
 
 function getResponse(response) {
     tempMax = Math.round(response.data.main.temp_max);
     tempMin = Math.round(response.data.main.temp_min);
     let desc = response.data.weather[0].main
-    //log coords for the forecast
+
+    //log coords for the forecast response
     getLatLon(response.data.coord);
   
     let lowElem = document.querySelector(".low-temp"); 
@@ -75,7 +71,7 @@ function getResponse(response) {
   getWeather();
 
 
-  //forecast 
+  //forecast data for city coordinates 
   function returnForecastData(coords) { 
     console.log(coords); 
     let apiKey = "bbd38691e217276012656e77f1249e98"; 
@@ -83,7 +79,15 @@ function getResponse(response) {
     axios.get(apiUrl).then(displayForecast);
   }
 
-//get result from search engine and update the heading
+  //get the coords for the forecast
+function getLatLon(coord) { 
+  returnForecastData(coord);
+}
+
+/////////////////// END Today's Weather ///////////////////
+
+
+////////////////////////  Change City Name on Search ///////////////////////
 let city
 
 function getCity(event) { 
@@ -123,6 +127,10 @@ function showResponse(response) {
   );
 
 }
+////////////////////////  END Change City Name on Search ///////////////////////
+
+
+/////////////// Format date time /////////////////////////
 function formatDT(timestamp) { 
   let datetime = timestamp * 1000
   let date = new Date(datetime);
@@ -132,7 +140,9 @@ function formatDT(timestamp) {
   return days[day];
 
 }
+/////////////// END Format date time /////////////////////////
 
+////////////////// Weekly Forecast //////////////////////////
 function displayForecast(response) {
   let forecast = response.data.daily;
 
@@ -169,4 +179,4 @@ function displayForecast(response) {
   forecastHTML = forecastHTML + `</div>`;
   forecastElement.innerHTML = forecastHTML;
 }
-
+////////////////// END Weekly Forecast //////////////////////////
